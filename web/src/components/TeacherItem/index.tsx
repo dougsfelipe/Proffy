@@ -2,37 +2,61 @@ import React from 'react';
 import whatsappIcon from '../../assests/images/icons/whatsapp.svg';
 
 import './style.css';
+import api from '../../services/api';
+
+export interface Teacher_Import {
 
 
-function TeacherItem() {
+    avatar: string;
+    bio: string;
+    cost: number;
+    name: string;
+    id: number;
+    subject: string
+    whatsapp: string;
+
+}
+
+interface TeacherItemProps {
+    teacher: Teacher_Import;
+}
+
+const TeacherItem: React.FunctionComponent<TeacherItemProps> = ({ teacher }) => {
+
+    function createNewConnection(){
+        api.post('conncections', {
+            user_id: teacher.id,
+        });
+    }
     return (
         <article className="teacher-item">
             <header>
-                <img src="https://avatars3.githubusercontent.com/u/38046081?s=460&u=18e106897c8511e6a514900459b8e31f39bbe76f&v=4" alt="douglas" />
+                <img src={teacher.avatar} alt={teacher.name} />
                 <div>
-                    <strong>Douglas Felipe</strong>
-                    <span>Quimica</span>
+                    <strong>{teacher.name}</strong>
+                    <span>{teacher.subject}</span>
                 </div>
             </header>
             <p>
-                I love how Black Star comes in at the very last second of the ending scene like "Oh crap I'm supposed to be in this shot!"
-                <br></br>
-                I love how Black Star comes in at the very last second of the ending scene like "Oh crap I'm supposed to be in this shot!"
-                </p>
+                {teacher.bio}
 
-            <footer>
-                <p>
-                    Preço/Hora
-                        <strong>R$ 80,00</strong>
+            </p>
+                <footer>
+                    <p>
+                        Preço/Hora
+                        <strong>R$ {teacher.cost} </strong>
 
-                </p>
+                    </p>
 
-                <button type="button">
-                    <img src={whatsappIcon} alt="Entrar em contato" />Entrar em contato
-                        </button>
-            </footer>
-        </article>
-    );
-}
-
+                    <a onClick={createNewConnection} href={`https://wa.me/${teacher.whatsapp}`} type="button">
+                        <img src={whatsappIcon} alt="Entrar em contato" />Entrar em contato
+                        </a>
+                </footer>
+            </article>
+            )
+        
+        }
+           
+        
+        
 export default TeacherItem;
